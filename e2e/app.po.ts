@@ -15,34 +15,25 @@ export class AppPage {
 
   gettabstripElement() {
 
-    // browser.sleep(10000);
-    element.all(by.css('.file-list .docs-tabstrip li a')).then(function(items) {
-
-      // items.filter((item) => (item !== ''));
+    element.all(by.css('.file-list')).then(function(items) {
       for (let i = 0; i < items.length; i++) {
-          items[i].getText().then(result => {
+        items[i].all(by.css('.docs-tabstrip li a')).then( (fileNames) => {
+          for (let anchor = 0; anchor < fileNames.length; anchor ++) {
+          fileNames[anchor].getText().then(result => {
             if (result.length > 0) {
-              console.log(result);
-              items[i].click().then(() => {});
+              fileNames[anchor].click().then(() => {});
               browser.sleep(2000);
+               items[i].element(by.css('.tab-content')).getText().then( (code) => {
+                console.log(result + ' ', code);
+               });
             }
           });
+          }
+        });
       }
       browser.sleep(5000);
-      //  items[i].getText().then(result => {
-      //    console.log( result);
-      //    fs.writeFile('content.ts', result, function (err) {
-      //     if (err) throw err;
-      //     console.log('Saved!');
-      //   });
-      //  });
-
     });
 
-    // for (let i=0; i<fileTabstripLists.count(); i++){
-
-    // }
   }
-
 }
 
