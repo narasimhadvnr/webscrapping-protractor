@@ -14,27 +14,21 @@ export class AppPage {
   }
 
   gettabstripElement() {
-    // const fileTabstripLists = element.all(by.css('file-list'));
-    // // console.log('Elements found:', fileTabstripLists.count());
-    // const EC = ExpectedConditions;
-    // EC.visibilityOf(by.css('.file-list'));
-    // fileTabstripLists.count().then( (count) => {
-    //   console.log('elements found: ', count);
-    // });
+
     // browser.sleep(10000);
-    element.all(by.css('.file-list')).then(function(items) {
-      console.log('Items: ', items.length);
-      browser.sleep(5000);
-    //  console.log(0, ' ', items[0].getText());
-      // items[0].getText().then((content) => {
-      //   console.log(content);
-      // });
+    element.all(by.css('.file-list .docs-tabstrip li a')).then(function(items) {
+
+      // items.filter((item) => (item !== ''));
       for (let i = 0; i < items.length; i++) {
-        items[0].element.all(by.css('.docs-tabstrip li')).then(
-           (listItems) => {
-             console.log('list items found:', listItems.length);
-           }
-        );
+          items[i].getText().then(result => {
+            if (result.length > 0) {
+              console.log(result);
+              items[i].click().then(() => {});
+              browser.sleep(2000);
+            }
+          });
+      }
+      browser.sleep(5000);
       //  items[i].getText().then(result => {
       //    console.log( result);
       //    fs.writeFile('content.ts', result, function (err) {
@@ -42,8 +36,6 @@ export class AppPage {
       //     console.log('Saved!');
       //   });
       //  });
-      }
-      browser.sleep(5000);
 
     });
 
