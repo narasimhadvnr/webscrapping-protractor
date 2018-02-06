@@ -17,50 +17,52 @@ export class AppPage {
 
 
   clickViewSourceElements() {
-    element.all(by.css('a')).then(function (items) {
-      for (let i = 0; i < items.length; i++) {
-        items[i].getText().then((text) => {
-          // console.log('text: ', text);
-          if (text.trim().toLowerCase() === 'view source') {
-            browser.actions().mouseMove( items[i]).click();
-            browser.actions().mouseDown().mouseUp().perform();
-            console.log('item found with view source');
-          }
-        });
-      }
-    });
+
+      // browser.actions().mouseMove(items[item]).click();
+      // browser.actions().mouseDown().mouseUp().perform();
+      element.all(by.css('.docs-tabstrip a[href^="#code"]')).then( (anchors) => {
+        for (let anchor = anchors.length - 1; anchor >= 0; anchor--) {
+            // anchors[anchor].click();
+            console.log('item number:', anchor);
+         //   browser.actions().mouseMove(anchors[anchor]).click().perform();
+         anchors[anchor].click().then( ()  => {});
+            browser.sleep(2000);
+        }
+      });
+      browser.sleep(5000);
+
   }
 
   sleepBrowser(duration) {
     browser.sleep(duration);
   }
 
-  gettabstripElement(componentName) {
+  gettabstripElement(folder, componentName) {
     const FOLDER_NAME = 'code_';
     element.all(by.css('.file-list')).then(function(items) {
       for (let i = 0; i < items.length; i++) {
-        const folderName = __dirname + '/' + componentName + '/' + FOLDER_NAME + i;
-        mkdirp(folderName, () => {
+        const folderName = __dirname + '/' + folder + '/' + FOLDER_NAME + i;
+        // mkdirp(folderName, () => {
           items[i].all(by.css('.docs-tabstrip li a')).then( (fileNames) => {
             for (let anchor = 0; anchor < fileNames.length; anchor ++) {
             fileNames[anchor].getText().then(result => {
               if (result.length > 0) {
-                // browser.actions().mouseMove(fileNames[anchor]).click();
+                 browser.actions().mouseMove(fileNames[anchor]).click();
+                 browser.actions().mouseDown().mouseUp().perform();
+                 browser.sleep(2000);
                 fileNames[anchor].click().then(() => {
-                  
                 });
-                browser.actions().mouseDown().mouseUp().perform();
-                // browser.sleep(2000);
+                browser.sleep(2000);
                  items[i].element(by.css('.tab-content')).getText().then( (code) => {
                   const filePath = folderName + '/' + result;
-                  console.log('filePath: ', filePath, + ' code: ' + code);
-                  // fs.writeFileSync(filePath, code, 'utf-8');
+                  console.log('Writing to File: ', filePath);
+                   mkdirp.sync(folderName, () => {});
+                   fs.writeFileSync(filePath, code, 'utf-8');
                  });
               }
             });
             }
           });
-        });
       }
     });
 
