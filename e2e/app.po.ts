@@ -11,26 +11,33 @@ export class AppPage {
     return browser.get(url);
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
-  }
-
-
   clickViewSourceElements() {
 
       // browser.actions().mouseMove(items[item]).click();
       // browser.actions().mouseDown().mouseUp().perform();
-      element.all(by.css('.docs-tabstrip a[href^="#code"]')).then( (anchors) => {
-        for (let anchor = anchors.length - 1; anchor >= 0; anchor--) {
+      // browser.sleep(10000);
+      let viewSourceElements = element.all(by.css('.docs-tabstrip a[href^="#code"]'));
+      viewSourceElements.then( (anchors) => {
+        for (let anchor = 0; anchor < anchors.length; anchor++) {
             // anchors[anchor].click();
-            console.log('item number:', anchor);
-         //   browser.actions().mouseMove(anchors[anchor]).click().perform();
-         anchors[anchor].click().then( ()  => {});
-            browser.sleep(2000);
+            console.log('Moving to item number:', anchor);
+           browser.actions().mouseMove(anchors[anchor]).click().perform();
+        //  anchors[anchor].click().then( ()  => {});
+            browser.sleep(5000);
         }
       });
       browser.sleep(5000);
 
+  }
+
+  waitforSnippetRunners() {
+    element.all( by.css('.snippet-runner')).then( (items) => {
+      for (let item = 0; item < items.length; item++) {
+        const until = protractor.ExpectedConditions;
+        browser.wait(until.presenceOf(items[item]), 15000, 'Element taking too long to appear in the DOM');
+      }
+
+    } );
   }
 
   sleepBrowser(duration) {
