@@ -1,8 +1,8 @@
 import { AppPage } from './app.po';
 
 describe('webscrapping-protractor App', () => {
-  let page;
-  let url;
+  let page: AppPage = new AppPage();
+  const url = 'https://www.telerik.com/kendo-angular-ui/components/grid/editing/editing-reactive-forms/';
 
   beforeEach(() => {
     // page = new AppPage();
@@ -19,17 +19,16 @@ describe('webscrapping-protractor App', () => {
   // it('wait for items to appear', () => {
   //   page.navigateTo(url);
   //   console.log('testcase 1');
+    
   //   page.waitforSnippetRunners();
   // });
 
-  // it('load page', () => {
-  //   url = 'https://www.telerik.com/kendo-angular-ui/components/grid/editing/editing-reactive-forms/';
-  //   page = new AppPage();
-  //   page.navigateTo(url);
-  //   console.log('waiting for frames to load');
-  //   page.sleepBrowser(5000);
+  it('load page', () => {
+    page.navigateTo(url);
+    console.log('waiting for frames to load');
+    page.sleepBrowser(5000);
 
-  // });
+  });
   // it('should click viewsource tab elements', () => {
   //   //   expect(page.getParagraphText()).toEqual('Welcome to app!');
   //   console.log('testcase 2');
@@ -37,17 +36,15 @@ describe('webscrapping-protractor App', () => {
   //   page.sleepBrowser(3000);
   // });
 
+  it('refresh dom', () => {
+    page.clickAndRefreshDom();
+  });
+
   it('save file content', () => {
     // const url = 'https://www.telerik.com/kendo-angular-ui/components/grid/scroll-modes';
     // page.navigateTo(url);
-    url = 'https://www.telerik.com/kendo-angular-ui/components/grid/editing/editing-reactive-forms/';
-    page = new AppPage();
-    page.navigateTo(url);
-    console.log('waiting for frames to load');
-    page.sleepBrowser(5000);
-
-    page.clickAndRefreshDom();
     console.log('testcase 3');
+    
     const FOLDER_NAME = url.slice(52);
     const PARTS = url.slice(52).split('/');
     let componentName = '';
@@ -61,5 +58,6 @@ describe('webscrapping-protractor App', () => {
     page.sleepBrowser(20000);
   });
 
+  
  });
 
